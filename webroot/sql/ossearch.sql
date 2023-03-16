@@ -1,22 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 2.7.0-beta1
--- http://www.phpmyadmin.net
--- 
--- Host: localhost
--- Generatie Tijd: 24 Jan 2009 om 15:48
--- Server versie: 5.0.67
--- PHP Versie: 5.2.6-2ubuntu5
--- 
--- Database: `ossearch`
--- 
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `allparcels`
--- 
-
-CREATE TABLE IF NOT EXISTS `allparcels` (
+CREATE TABLE IF NOT EXISTS `search_allparcels` (
   `regionUUID` char(36) NOT NULL,
   `parcelname` varchar(255) NOT NULL,
   `ownerUUID` char(36) NOT NULL default '00000000-0000-0000-0000-000000000000',
@@ -29,12 +12,7 @@ CREATE TABLE IF NOT EXISTS `allparcels` (
   KEY `regionUUID` (`regionUUID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `classifieds`
--- 
-
+# No search_ prefix, table has to be same as what the builtin profile module uses
 CREATE TABLE IF NOT EXISTS `classifieds` (
   `classifieduuid` char(36) NOT NULL,
   `creatoruuid` char(36) NOT NULL,
@@ -54,13 +32,7 @@ CREATE TABLE IF NOT EXISTS `classifieds` (
   PRIMARY KEY  (`classifieduuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `events`
--- 
-
-CREATE TABLE IF NOT EXISTS `events` (
+CREATE TABLE IF NOT EXISTS `search_events` (
   `owneruuid` char(36) NOT NULL,
   `name` varchar(255) NOT NULL,
   `eventid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -78,13 +50,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   PRIMARY KEY (`eventid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `hostsregister`
--- 
-
-CREATE TABLE IF NOT EXISTS `hostsregister` (
+CREATE TABLE IF NOT EXISTS `search_hostsregister` (
   `host` varchar(255) NOT NULL,
   `port` int(5) NOT NULL,
   `register` int(10) NOT NULL,
@@ -94,13 +60,7 @@ CREATE TABLE IF NOT EXISTS `hostsregister` (
   PRIMARY KEY (`host`,`port`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `objects`
--- 
-
-CREATE TABLE IF NOT EXISTS `objects` (
+CREATE TABLE IF NOT EXISTS `search_objects` (
   `objectuuid` char(36) NOT NULL,
   `parceluuid` char(36) NOT NULL,
   `location` varchar(255) NOT NULL,
@@ -110,13 +70,7 @@ CREATE TABLE IF NOT EXISTS `objects` (
   PRIMARY KEY  (`objectuuid`,`parceluuid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `parcels`
--- 
-
-CREATE TABLE IF NOT EXISTS `parcels` (
+CREATE TABLE IF NOT EXISTS `search_parcels` (
   `regionUUID` char(36) NOT NULL,
   `parcelname` varchar(255) NOT NULL,
   `parcelUUID` char(36) NOT NULL,
@@ -136,13 +90,7 @@ CREATE TABLE IF NOT EXISTS `parcels` (
   KEY `dwell` (`dwell`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `parcelsales`
--- 
-
-CREATE TABLE IF NOT EXISTS `parcelsales` (
+CREATE TABLE IF NOT EXISTS `search_parcelsales` (
   `regionUUID` char(36) NOT NULL,
   `parcelname` varchar(255) NOT NULL,
   `parcelUUID` char(36) NOT NULL,
@@ -156,13 +104,7 @@ CREATE TABLE IF NOT EXISTS `parcelsales` (
   PRIMARY KEY  (`regionUUID`,`parcelUUID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `popularplaces`
--- 
-
-CREATE TABLE IF NOT EXISTS `popularplaces` (
+CREATE TABLE IF NOT EXISTS `search_popularplaces` (
   `parcelUUID` char(36) NOT NULL,
   `name` varchar(255) NOT NULL,
   `dwell` float NOT NULL,
@@ -172,13 +114,7 @@ CREATE TABLE IF NOT EXISTS `popularplaces` (
   PRIMARY KEY  (`parcelUUID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
--- 
--- Tabel structuur voor tabel `regions`
--- 
-
-CREATE TABLE IF NOT EXISTS `regions` (
+CREATE TABLE IF NOT EXISTS `search_regions` (
   `regionname` varchar(255) NOT NULL,
   `regionUUID` char(36) NOT NULL,
   `regionhandle` varchar(255) NOT NULL,

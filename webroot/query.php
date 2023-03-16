@@ -129,7 +129,7 @@ function dir_places_query($method_name, $params, $app_data)
     if (!is_int($query_start))
          $query_start = 0;
 
-    $sql = "SELECT * FROM parcels WHERE $cat_where" .
+    $sql = "SELECT * FROM search_parcels WHERE $cat_where" .
            " (parcelname LIKE :text1" .
            " OR description LIKE :text2)" .
            $type . " ORDER BY $order parcelname" .
@@ -199,7 +199,7 @@ function dir_popular_query($method_name, $params, $app_data)
     if (!is_int($query_start))
          $query_start = 0;
 
-    $query = $db->prepare("SELECT * FROM popularplaces" . $where .
+    $query = $db->prepare("SELECT * FROM search_popularplaces" . $where .
                           " LIMIT $query_start,101");
     $result = $query->execute($sqldata);
 
@@ -301,7 +301,7 @@ function dir_land_query($method_name, $params, $app_data)
     if (!is_int($query_start))
          $query_start = 0;
 
-    $sql = "SELECT *,saleprice/area AS lsq FROM parcelsales" . $where .
+    $sql = "SELECT *,saleprice/area AS lsq FROM search_parcelsales" . $where .
            " ORDER BY " . $order . " LIMIT $query_start,101";
     $query = $db->prepare($sql);
     $result = $query->execute($sqldata);
@@ -432,7 +432,7 @@ function dir_events_query($method_name, $params, $app_data)
          $query_start = 0;
 
     $sql = "SELECT owneruuid,name,eventid,dateUTC,eventflags,globalPos" .
-           " FROM events". $where. " LIMIT $query_start,101";
+           " FROM search_events". $where. " LIMIT $query_start,101";
     $query = $db->prepare($sql);
     $result = $query->execute($sqldata);
 
@@ -585,7 +585,7 @@ function event_info_query($method_name, $params, $app_data)
 
     $eventID    = $req['eventID'];
 
-    $query = $db->prepare("SELECT * FROM events WHERE eventID = ?");
+    $query = $db->prepare("SELECT * FROM search_events WHERE eventID = ?");
     $result = $query->execute( array($eventID) );
 
     $data = array();

@@ -54,7 +54,7 @@ function CheckHost($hostname, $port)
     //won't be checked again until at least this much time has gone by.
     $next = $now + 600;
 
-    $query = $db->prepare("UPDATE hostsregister SET nextcheck = ?," .
+    $query = $db->prepare("UPDATE search_hostsregister SET nextcheck = ?," .
                           " checked = 1, failcounter = $failcounter" .
                           " WHERE host = ? AND port = ?");
     $query->execute( array($next, $hostname, $port) );
@@ -100,7 +100,7 @@ function parse($hostname, $port, $xml)
     $expire = $regiondata->getElementsByTagName("expire")->item(0)->nodeValue;
     $next = $now + $expire;
 
-    $query = $db->prepare("UPDATE hostsregister SET nextcheck = ?" .
+    $query = $db->prepare("UPDATE search_hostsregister SET nextcheck = ?" .
                           " WHERE host = ? AND port = ?");
     $query->execute( array($next, $hostname, $port) );
 
@@ -129,20 +129,20 @@ function parse($hostname, $port, $xml)
         //
         // First, check if we already have a region that is the same
         //
-        $check = $db->prepare("SELECT * FROM regions WHERE regionUUID = ?");
+        $check = $db->prepare("SELECT * FROM search_regions WHERE regionUUID = ?");
         $check->execute( array($regionuuid) );
 
         if ($check->rowCount() > 0)
         {
-            $query = $db->prepare("DELETE FROM regions WHERE regionUUID = ?");
+            $query = $db->prepare("DELETE FROM search_regions WHERE regionUUID = ?");
             $query->execute( array($regionuuid) );
-            $query = $db->prepare("DELETE FROM parcels WHERE regionUUID = ?");
+            $query = $db->prepare("DELETE FROM search_parcels WHERE regionUUID = ?");
             $query->execute( array($regionuuid) );
-            $query = $db->prepare("DELETE FROM allparcels WHERE regionUUID = ?");
+            $query = $db->prepare("DELETE FROM search_allparcels WHERE regionUUID = ?");
             $query->execute( array($regionuuid) );
-            $query = $db->prepare("DELETE FROM parcelsales WHERE regionUUID = ?");
+            $query = $db->prepare("DELETE FROM search_parcelsales WHERE regionUUID = ?");
             $query->execute( array($regionuuid) );
-            $query = $db->prepare("DELETE FROM objects WHERE regionuuid = ?");
+            $query = $db->prepare("DELETE FROM search_objects WHERE regionuuid = ?");
             $query->execute( array($regionuuid) );
         }
 
@@ -157,7 +157,7 @@ function parse($hostname, $port, $xml)
         //
         // Second, add the new info to the database
         //
-        $query = $db->prepare("INSERT INTO regions VALUES(:r_name, :r_uuid, " .
+        $query = $db->prepare("INSERT INTO search_regions VALUES(:r_name, :r_uuid, " .
                               ":r_handle, :url, :u_name, :u_uuid)");
         $query->execute( array("r_name" => $regionname, "r_uuid" => $regionuuid,
                                 "r_handle" => $regionhandle, "url" => $url,
@@ -228,13 +228,13 @@ function parse($hostname, $port, $xml)
 
             //Prepare for the insert of data in to the popularplaces table. This gets
             //rid of any obsolete data for parcels no longer set to show in search.
-            $query = $db->prepare("DELETE FROM popularplaces WHERE parcelUUID = ?");
+            $query = $db->prepare("DELETE FROM search_popularplaces WHERE parcelUUID = ?");
             $query->execute( array($parceluuid) );
 
             //
             // Save
             //
-            $query = $db->prepare("INSERT INTO allparcels VALUES(" .
+            $query = $db->prepare("INSERT INTO search_allparcels VALUES(" .
                                     ":r_uuid, :p_name, :o_uuid, :g_uuid, " .
                                     ":landing, :p_uuid, :i_uuid, :area)");
             $query->execute( array("r_uuid"  => $regionuuid,
@@ -248,7 +248,7 @@ function parse($hostname, $port, $xml)
 
             if ($parceldirectory == "true")
             {
-                $query = $db->prepare("INSERT INTO parcels VALUES(" .
+                $query = $db->prepare("INSERT INTO search_parcels VALUES(" .
                                        ":r_uuid, :p_name, :p_uuid, :landing, " .
                                        ":desc, :cat, :build, :script, :public, ".
                                        ":dwell, :i_uuid, :r_cat)");
@@ -265,7 +265,7 @@ function parse($hostname, $port, $xml)
                                        "i_uuid"  => $infouuid,
                                        "r_cat"   => $regioncategory) );
 
-                $query = $db->prepare("INSERT INTO popularplaces VALUES(" .
+                $query = $db->prepare("INSERT INTO search_popularplaces VALUES(" .
                                        ":p_uuid, :p_name, :dwell, " .
                                        ":i_uuid, :has_pic, :r_cat)");
                 $query->execute( array("p_uuid"  => $parceluuid,
@@ -278,7 +278,7 @@ function parse($hostname, $port, $xml)
 
             if ($parcelforsale == "true")
             {
-                $query = $db->prepare("INSERT INTO parcelsales VALUES(" .
+                $query = $db->prepare("INSERT INTO search_parcelsales VALUES(" .
                                        ":r_uuid, :p_name, :p_uuid, :area, " .
                                        ":price, :landing, :i_uuid, :dwell, " .
                                        ":e_id, :r_cat)");
@@ -316,7 +316,7 @@ function parse($hostname, $port, $xml)
 
             $flags = $value->getElementsByTagName("flags")->item(0)->nodeValue;
 
-            $query = $db->prepare("INSERT INTO objects VALUES(" .
+            $query = $db->prepare("INSERT INTO search_objects VALUES(" .
                                    ":uuid, :p_uuid, :location, " .
                                    ":title, :desc, :r_uuid)");
             $query->execute( array("uuid"     => $uuid,
@@ -329,7 +329,7 @@ function parse($hostname, $port, $xml)
     }
 }
 
-$sql = "SELECT host, port FROM hostsregister " .
+$sql = "SELECT host, port FROM search_hostsregister " .
        "WHERE nextcheck<$now AND checked=0 AND failcounter<10 LIMIT 0,10";
 $jobsearch = $db->query($sql);
 
@@ -340,7 +340,7 @@ $jobsearch = $db->query($sql);
 //
 if ($jobsearch->rowCount() == 0)
 {
-    $jobsearch = $db->query("UPDATE hostsregister SET checked = 0");
+    $jobsearch = $db->query("UPDATE search_hostsregister SET checked = 0");
 
     $jobsearch = $db->query($sql);
 }
