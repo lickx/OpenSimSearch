@@ -126,14 +126,17 @@ function dir_places_query($method_name, $params, $app_data)
     $sqldata['text2'] = $text;
 
     //Prevent SQL injection by checking that $query_start is a number
-    if (!is_int($query_start))
-         $query_start = 0;
+    $query_start = (int)$query_start;
+    if ($query_start != 0 && ($query_start%100 != 0))
+        $query_start = 0;
+
+    $query_end = 101;
 
     $sql = "SELECT * FROM search_parcels WHERE $cat_where" .
            " (parcelname LIKE :text1" .
            " OR description LIKE :text2)" .
            $type . " ORDER BY $order parcelname" .
-           " LIMIT $query_start,101";
+           " LIMIT ".$query_start.",".$query_end.";";
     $query = $db->prepare($sql);
     $result = $query->execute($sqldata);
 
@@ -605,6 +608,7 @@ function event_info_query($method_name, $params, $app_data)
         if ($row['category'] == 27)    $category = "Arts and Culture";
         if ($row['category'] == 28)    $category = "Charity/Support Groups";
         if ($row['category'] == 29)    $category = "Miscellaneous";
+        if ($row['category'] == 30)    $category = "Live DJ";
 
         $data[] = array(
                 "event_id" => $row["eventid"],

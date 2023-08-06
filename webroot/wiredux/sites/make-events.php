@@ -233,6 +233,7 @@ function checklength(obj,warning_div)
 				<option value="23"  >Nightlife/Entertainment</option>
 				<option value="25"  >Pageants</option>
 				<option value="19"  >Sports</option>
+				<option value="30"  >Live DJ</option>
 			</select>
 		</td>
 	</tr>
