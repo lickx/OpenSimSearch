@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `search_allparcels` (
   `parcelarea` int(11) NOT NULL,
   PRIMARY KEY  (`parcelUUID`),
   KEY `regionUUID` (`regionUUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # No search_ prefix, table has to be same as what the builtin profile module uses
 CREATE TABLE IF NOT EXISTS `classifieds` (
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `classifieds` (
   `classifiedflags` int(8) NOT NULL,
   `priceforlisting` int(5) NOT NULL,
   PRIMARY KEY  (`classifieduuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `search_events` (
   `owneruuid` char(36) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `search_hostsregister` (
   `checked` tinyint(1) NOT NULL,
   `failcounter` int(10) NOT NULL,
   PRIMARY KEY (`host`,`port`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `search_objects` (
   `objectuuid` char(36) NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `search_objects` (
   `description` varchar(255) NOT NULL,
   `regionuuid` char(36) NOT NULL default '',
   PRIMARY KEY  (`objectuuid`,`parceluuid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `search_parcels` (
   `regionUUID` char(36) NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `search_parcels` (
   KEY `description` (`description`),
   KEY `searchcategory` (`searchcategory`),
   KEY `dwell` (`dwell`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `search_parcelsales` (
   `regionUUID` char(36) NOT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `search_parcelsales` (
   `parentestate` int(11) NOT NULL default '1',
   `mature` varchar(10) NOT NULL default 'PG',
   PRIMARY KEY  (`regionUUID`,`parcelUUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `search_popularplaces` (
   `parcelUUID` char(36) NOT NULL,
@@ -110,9 +110,9 @@ CREATE TABLE IF NOT EXISTS `search_popularplaces` (
   `dwell` float NOT NULL,
   `infoUUID` char(36) NOT NULL,
   `has_picture` tinyint(1) NOT NULL,
-  `mature` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `mature` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY  (`parcelUUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `search_regions` (
   `regionname` varchar(255) NOT NULL,
@@ -122,4 +122,4 @@ CREATE TABLE IF NOT EXISTS `search_regions` (
   `owner` varchar(255) NOT NULL,
   `owneruuid` char(36) NOT NULL,
   PRIMARY KEY  (`regionUUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
