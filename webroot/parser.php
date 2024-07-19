@@ -190,6 +190,7 @@ function parse($hostname, $port, $xml)
 
             //The image tag will only exist if the parcel has a snapshot image
             $has_pic = 0;
+            $image = "00000000-0000-0000-0000-000000000000";
             $image_node = $value->getElementsByTagName("image");
 
             if ($image_node->length > 0)
@@ -251,7 +252,7 @@ function parse($hostname, $port, $xml)
                 $query = $db->prepare("INSERT INTO search_parcels VALUES(" .
                                        ":r_uuid, :p_name, :p_uuid, :landing, " .
                                        ":desc, :cat, :build, :script, :public, ".
-                                       ":dwell, :i_uuid, :r_cat)");
+                                       ":dwell, :i_uuid, :r_cat, :pic_uuid)");
                 $query->execute( array("r_uuid"  => $regionuuid,
                                        "p_name"  => $parcelname,
                                        "p_uuid"  => $parceluuid,
@@ -263,7 +264,8 @@ function parse($hostname, $port, $xml)
                                        "public"  => $parcelpublic,
                                        "dwell"   => $dwell,
                                        "i_uuid"  => $infouuid,
-                                       "r_cat"   => $regioncategory) );
+                                       "r_cat"   => $regioncategory,
+                                       "pic_uuid"   => $image) );
 
                 $query = $db->prepare("INSERT INTO search_popularplaces VALUES(" .
                                        ":p_uuid, :p_name, :dwell, " .
