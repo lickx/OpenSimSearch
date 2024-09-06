@@ -1,36 +1,20 @@
+/* Initial table creation for OpenSimSearch (lickx branch) */
+/* To be sourced into your robust mariadb/mysql database */
+/* Additional changes, if any, are in migrations*.sql */
+/* Note: Table 'classifieds' will be created by robust */
 
 CREATE TABLE IF NOT EXISTS `search_allparcels` (
   `regionUUID` char(36) NOT NULL,
   `parcelname` varchar(255) NOT NULL,
-  `ownerUUID` char(36) NOT NULL default '00000000-0000-0000-0000-000000000000',
-  `groupUUID` char(36) NOT NULL default '00000000-0000-0000-0000-000000000000',
+  `ownerUUID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `groupUUID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `landingpoint` varchar(255) NOT NULL,
-  `parcelUUID` char(36) NOT NULL default '00000000-0000-0000-0000-000000000000',
-  `infoUUID` char(36) NOT NULL default '00000000-0000-0000-0000-000000000000',
+  `parcelUUID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `infoUUID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `parcelarea` int(11) NOT NULL,
-  PRIMARY KEY  (`parcelUUID`),
+  PRIMARY KEY (`parcelUUID`),
   KEY `regionUUID` (`regionUUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-# No search_ prefix, table has to be same as what the builtin profile module uses
-CREATE TABLE IF NOT EXISTS `classifieds` (
-  `classifieduuid` char(36) NOT NULL,
-  `creatoruuid` char(36) NOT NULL,
-  `creationdate` int(20) NOT NULL,
-  `expirationdate` int(20) NOT NULL,
-  `category` varchar(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `parceluuid` char(36) NOT NULL,
-  `parentestate` int(11) NOT NULL,
-  `snapshotuuid` char(36) NOT NULL,
-  `simname` varchar(255) NOT NULL,
-  `posglobal` varchar(255) NOT NULL,
-  `parcelname` varchar(255) NOT NULL,
-  `classifiedflags` int(8) NOT NULL,
-  `priceforlisting` int(5) NOT NULL,
-  PRIMARY KEY  (`classifieduuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 CREATE TABLE IF NOT EXISTS `search_events` (
   `owneruuid` char(36) NOT NULL,
@@ -48,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `search_events` (
   `globalPos` varchar(255) NOT NULL,
   `eventflags` int(1) NOT NULL,
   PRIMARY KEY (`eventid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 CREATE TABLE IF NOT EXISTS `search_hostsregister` (
   `host` varchar(255) NOT NULL,
@@ -58,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `search_hostsregister` (
   `checked` tinyint(1) NOT NULL,
   `failcounter` int(10) NOT NULL,
   PRIMARY KEY (`host`,`port`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 CREATE TABLE IF NOT EXISTS `search_objects` (
   `objectuuid` char(36) NOT NULL,
@@ -66,9 +50,9 @@ CREATE TABLE IF NOT EXISTS `search_objects` (
   `location` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `regionuuid` char(36) NOT NULL default '',
-  PRIMARY KEY  (`objectuuid`,`parceluuid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `regionuuid` char(36) NOT NULL DEFAULT '',
+  PRIMARY KEY (`objectuuid`,`parceluuid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 CREATE TABLE IF NOT EXISTS `search_parcels` (
   `regionUUID` char(36) NOT NULL,
@@ -80,15 +64,16 @@ CREATE TABLE IF NOT EXISTS `search_parcels` (
   `build` enum('true','false') NOT NULL,
   `script` enum('true','false') NOT NULL,
   `public` enum('true','false') NOT NULL,
-  `dwell` float NOT NULL default '0',
-  `infouuid` varchar(36) NOT NULL default '',
-  `mature` varchar(10) NOT NULL default 'PG',
-  PRIMARY KEY  (`regionUUID`,`parcelUUID`),
+  `dwell` float NOT NULL DEFAULT 0,
+  `infouuid` varchar(36) NOT NULL DEFAULT '',
+  `mature` varchar(10) NOT NULL DEFAULT 'PG',
+  `pictureUUID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  PRIMARY KEY (`regionUUID`,`parcelUUID`),
   KEY `name` (`parcelname`),
   KEY `description` (`description`),
   KEY `searchcategory` (`searchcategory`),
   KEY `dwell` (`dwell`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 CREATE TABLE IF NOT EXISTS `search_parcelsales` (
   `regionUUID` char(36) NOT NULL,
@@ -97,12 +82,12 @@ CREATE TABLE IF NOT EXISTS `search_parcelsales` (
   `area` int(6) NOT NULL,
   `saleprice` int(11) NOT NULL,
   `landingpoint` varchar(255) NOT NULL,
-  `infoUUID` char(36) NOT NULL default '00000000-0000-0000-0000-000000000000',
+  `infoUUID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `dwell` int(11) NOT NULL,
-  `parentestate` int(11) NOT NULL default '1',
-  `mature` varchar(10) NOT NULL default 'PG',
-  PRIMARY KEY  (`regionUUID`,`parcelUUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `parentestate` int(11) NOT NULL DEFAULT 1,
+  `mature` varchar(10) NOT NULL DEFAULT 'PG',
+  PRIMARY KEY (`regionUUID`,`parcelUUID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 CREATE TABLE IF NOT EXISTS `search_popularplaces` (
   `parcelUUID` char(36) NOT NULL,
@@ -110,9 +95,9 @@ CREATE TABLE IF NOT EXISTS `search_popularplaces` (
   `dwell` float NOT NULL,
   `infoUUID` char(36) NOT NULL,
   `has_picture` tinyint(1) NOT NULL,
-  `mature` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY  (`parcelUUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `mature` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`parcelUUID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 CREATE TABLE IF NOT EXISTS `search_regions` (
   `regionname` varchar(255) NOT NULL,
@@ -121,5 +106,6 @@ CREATE TABLE IF NOT EXISTS `search_regions` (
   `url` varchar(255) NOT NULL,
   `owner` varchar(255) NOT NULL,
   `owneruuid` char(36) NOT NULL,
-  PRIMARY KEY  (`regionUUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`regionUUID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
